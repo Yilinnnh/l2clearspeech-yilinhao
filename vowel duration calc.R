@@ -144,9 +144,9 @@ process_textgrid <- function(file_path, tier_number = 2) {
 }
 
 # run
-file_path <- file.choose()  
-tier_number <- as.integer(readline(prompt = "Enter the Tier Number: ")) 
+#file_path <- file.choose()  
+#tier_number <- as.integer(readline(prompt = "Enter the Tier Number: ")) 
 
 
-process_textgrid("/Users/haoyilin/Desktop/ma_thesis/n-nn/textgrid/DP_ENF_26_CHF_10_EN_CHF_10_DP_ENF_26_CHF_10_EN_ENF_26.TextGrid", tier_number = 2)
+process_textgrid("~/Desktop/ma_thesis/nn-nn2/textgrid/DP_IR_01_KO_08_EN_IR_01_DP_IR_01_KO_08_EN_KO_08.TextGrid", tier_number = 4)
 

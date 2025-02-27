@@ -1,0 +1,358 @@
+---
+title: "L2 Speakers' Use and Maintenance of Clear Speech in Natural Conversations"
+shorttitle: "L2 SPEAKERS' USE AND MAINTENANCE OF CLEAR SPEECH"
+author:
+  - name: Yilin Hao
+    corresponding: true
+    email: y2hao@uchicago.edu
+    roles:
+      - conceptualization
+      - writing
+      - formal analysis
+    affiliations:
+      - id: id1
+        name: "University of Chicago"
+        department: MA Program in the Social Sciences
+        address: "1155 E 60th St."
+        city: Chicago
+        region: IL
+        country: USA
+        postal-code: 60637
+
+abstract: "This study investigates L2 speakers' use and maintenance of clear speech in natural conversations."
+
+keywords: [L2 speakers, speech production, R programming, ggplot2, data communication]
+
+floatsintext: true
+numbered-lines: false
+bibliography: [r-references.bib, bibliography.bib]
+suppress-title-page: false
+link-citations: true
+draft-date: false
+lang: en
+language:
+  citation-last-author-separator: "and"
+  citation-masked-author: "Masked Citation"
+  citation-masked-date: "n.d."
+  citation-masked-title: "Masked Title"
+  email: "Email"
+#  title-block-author-note: "Author Note"
+#  title-block-correspondence-note: "Correspondence concerning this article should be addressed to"
+#  title-block-role-introduction: "Author roles were classified using the Contributor Role Taxonomy (CRediT; https://credit.niso.org/) as follows:"
+#  title-impact-statement: "Impact Statement"
+  references-meta-analysis: "References marked with an asterisk indicate studies included in the meta-analysis."
+format:
+  apaquarto-html: default
+  apaquarto-docx: default
+  apaquarto-typst: 
+    keep-typ: true
+    list-of-figures: true
+    list-of-tables: true
+    toc: true
+  apaquarto-pdf:
+    documentmode: man
+    keep-tex: true
+    list-of-figures: true
+    list-of-tables: true
+    fig-width: 2
+    fig-height: 2
+    out-width: 40%
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+#load packages
+library(conflicted)
+library(papaja)
+library(dplyr)
+library(stringr)
+library(lme4)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(stringr)
+library(flextable)
+library(RColorBrewer)
+library(broom)
+library(knitr)
+
+conflicts_prefer(dplyr::filter, .quiet = TRUE)
+conflicts_prefer(flextable::separate_header, .quiet = TRUE)
+conflicts_prefer(flextable::theme_apa, .quiet = TRUE)
+```
+
+# Introduction
+## Literature Review {#sec-lit-review}
+Native English speakers often tend to use clear speech to make their speech more
+intelligible in their conversations with people who may have difficulty understanding their
+speech, such as non-native speakers. This raises the question: do second language (L2) speakers
+of English also use clear speech when communicating with other L2 speakers? This proposed
+study may provide insight into L2 speakers’ use of clear speech in natural conversations,
+especially whether they will spontaneously adopt this speech style when they are talking to other
+L2 speakers and their maintenance of this speech style throughout the conversation.
+Literature review
+“Clear speech” refers to speakers’ modification of their speech in order to increase the
+intelligibility for the listener, which includes various acoustic-phonetic changes like slower
+speech and linguistic adaptations like higher frequency words (Tuomainen et al., 2022). It is
+usually used by speakers to accommodate noisy environments, listeners with hearing
+impairments, and non-native listeners (Mattys et al., 2012). In Hazan et al.’s (2018) study of
+speech adaptation in conversations with adults with hearing loss, they found some significant
+differences in acoustic features between clear speech and normal speech style, which is also
+referred to as plain speech, including acoustic cues like articulation rate, mid-frequency range,
+and vocal effort which reflected by mean energy within the mid-frequency region.
+The benefit of clear speech has been found to be significant when addressing listeners
+with impaired hearing (Picheny et al., 1985) and in noisy environments (Calandruccio, 2020). By
+modifying the acoustic cues, clear speech can greatly improve native speakers’ intelligibility
+gain [@bradlow_clear_2002]. Although non-native speakers face different challenges in
+understanding speech compared to native speakers with hearing impairments or in noisy
+environments—difficulty accessing the underlying linguistic code rather than the speech
+signal—researchers found that non-native speakers can still benefit from clear speech with
+features such as a slower speaking rate and a wider dynamic pitch range [@bradlow_clear_2002]. Recent studies have shown that clear speech has an overall effect in increasing
+intelligibility gain regardless of language background, and the benefit difference between l2
+speakers and native speakers is not significant [@jung_acoustic_2023]. In addition, L2 speakers
+with higher fluency in English demonstrate a clear speech benefit that is more comparable to that
+of native speakers. (Similjanic and Bradlow, 2011).
+Previous research has shown that besides perceptually benefiting from clear speech,
+fluent L2 speakers also exhibit the ability to produce effective acoustic-phonetic modifications in their speech and achieve the effect of clear speech (Kato & Baese-Berk, 2022). Although the
+extent of acoustic modification in their speech differs from that of native speakers, L2 speakers
+are still able to successfully use clear speech (Jung, Dmitrieva, 2023). By analyzing L2 speakers’ acoustic characteristics while reading given texts in clear and plain speech styles, Jung and Dmitrieva (2023) found that L2 speakers also demonstrated the same clear speech features as native speakers. In other words, L2 speakers exhibited their ability to employ clear speech when they were prompted to do so.
+
+## Present Study {#sec-present-study}
+While the prior studies examined the effectiveness of L2 speakers’ clear speech and the perceptual benefit of clear speech for L2 speakers using artificial methods where there’s no actual conversation, there are few studies that examined L2 speakers’ use of clear speech in natural conversations (Similjanic and Bradlow, 2011; Bradlow and Bent, 2002). Previous studies have illustrated that native speakers’ clear speech exhibits greater hyperarticulation under artificial methods, where participants are instructed to read texts in a clear speech style, compared to their clear speech produced in natural conversations (Hazan and Baker, 2011). Therefore, in natural conversations, L2 speakers' use of clear speech and its effectiveness may also differ from their performance in artificial contexts. The present study aims to explore whether L2 speakers will spontaneously use clear speech while talking to someone who may have difficulty understanding them— in this study, other non-native speakers— and whether they maintain this use throughout the conversation.
+Specifically, the present study aims to answer the following questions: whether L2 speakers will show clear speech characteristics like lower articulation rate, higher F0, and higher mean energy of mid-frequency region (Hazan et al., 2018) in their conversation with other L2 speakers in comparison with their conversation with native speakers, and whether these characteristics persist from the early to the later stages of the conversation. We hypothesize that L2 speakers will use clear speech when interacting with another L2 speaker, indicating their purpose of making their speech more intelligible to non-native listeners (Mattys et al., 2012). If the hypothesis is true, then native speakers’ speech is expected to show modifications including slower speech rate, greater F0, and higher mean energy in the mid-frequency region during their conversations with L2 speakers compared to their conversations with native speakers (Hazan et al., 2018). Furthermore, if L2 speakers tend to maintain using clear speech throughout the conversation to meet the intelligibility needs of listeners, they will continue showing these features throughout the speech. Lee and Baese-Berk(2020) found that native speakers' clear speech became less intelligible in the later portions of a conversation but reset to clear speech at the beginning of the next conversation, which suggests that even though the use of clear speech is oriented by listeners' needs, native speakers do not monitor their listener throughout the conversation. Therefore, it is possible that L2 speakers may use clear speech at an earlier stage of their conversation and become less clear later, which can suggest that the maintenance of clear speech is speaker-driven even though the use of clear speech is mostly listener-driven (Lee & Baese-Berk, 2020). An alternative hypothesis is that they will use plain speech style when they communicate with L2 speakers, thus their acoustic cues and speech signals would not have significant differences when talking to both L2 and native speakers, which can reflect their assumption that their listeners have no problem understanding them.
+
+# Methods
+Participants
+Participants were students recruited from Northwestern University, including native speakers of English and L2 speakers. L2 speakers were included if they were non-native speakers who could also speak English and demonstrate proficiency in English. These participants had been in the U.S. for no more than 3 years and had achieved TOEFL scores of at least 600 for the paper-based test, 250 for the computer-based test, or 100 for the internet-based test (Van Engen et al., 2010).
+Materials
+This study will analyze conversations recorded during Diapix tasks, drawn from the Wildcat Corpus (Van Engen et al., 2010). The Diapix task requires two participants to identify differences in a pair of pictures. Each pair of pictures presents the same general scene but with 10 differences: each picture has three items that are missing from the other, and there are four slight differences between the two pictures (“change” items, such as differences in color or other details) (Van Engen et al., 2010). Each participant will be able to see one of a pair of pictures and they are asked to identify all the differences by verbal communication with their partner.
+Procedure
+Participants completed the Diapix task in two groups. One group involves pairs of two L2 speakers, and the second group involves pairs of one L2 speaker with a native English speaker. Participants sat back-to-back in a recording room where they could communicate but could not see each other's pictures. They were instructed to work collaboratively through conversation to identify all the differences in their pictures within 20 minutes and mark them by drawing circles or notes, etc. They wore headsets so their speeches will be recorded separately.
+Data Analysis
+Recording of participants’ speech will be transcribed using the phonetic analysis software Praat. The articulation rate will be calculated by the number of syllables produced in speech divided by the total duration of the speech. The mean energy and fundamental frequency will be measured by Praat. The independent variables will be different kinds of participant pairing, including one native speaker and one L2 speaker or two L2 speakers, and different stages of conversation (early or late). We will compare the F0, mean energy, and articulation rate of L2 speakers’ speech between these two groups, either talking to L2 speakers or native speakers. In addition, we will examine how these features vary between the early and late stages of the conversation. The greater F0, mean energy, and slower articulation rate are going to be the indicators of clear speech. The results will be analyzed using R with separate linear mixed-effects regression models.
+
+
+```{r}
+#| label: data cleaning
+#| include: false
+data_cleaning <- function(speaker_group) {
+  speaker_group %>%
+    setNames(c("subject", "F0", "F0_range", "speech_rate", "vowel_duration",
+               "early_F0", "early_F0_range", "early_speech_rate", "early_vowel_duration",
+               "late_F0", "late_F0_range", "late_speech_rate", "late_vowel_duration")) %>%
+    mutate(subject = str_to_upper(str_trim(subject))) %>%
+    mutate(
+      F0 = as.numeric(gsub("[^0-9\\.\\-]", "", F0)),
+      F0_range = as.numeric(gsub("[^0-9\\.\\-]", "", F0_range)),
+      speech_rate = as.numeric(gsub("[^0-9\\.\\-]", "", speech_rate)),
+      vowel_duration = as.numeric(gsub("[^0-9\\.\\-]", "", vowel_duration)),
+      early_F0 = as.numeric(gsub("[^0-9\\.\\-]", "", early_F0)),
+      early_F0_range = as.numeric(gsub("[^0-9\\.\\-]", "", early_F0_range)),
+      early_speech_rate = as.numeric(gsub("[^0-9\\.\\-]", "", early_speech_rate)),
+      early_vowel_duration = as.numeric(gsub("[^0-9\\.\\-]", "", early_vowel_duration)),
+      late_F0 = as.numeric(gsub("[^0-9\\.\\-]", "", late_F0)),
+      late_F0_range = as.numeric(gsub("[^0-9\\.\\-]", "", late_F0_range)),
+      late_speech_rate = as.numeric(gsub("[^0-9\\.\\-]", "", late_speech_rate)),
+      late_vowel_duration = as.numeric(gsub("[^0-9\\.\\-]", "", late_vowel_duration))
+    ) %>%
+    mutate(
+      F0 = round(F0, 2),
+      F0_range = round(F0_range, 2),
+      speech_rate = round(speech_rate, 2),
+      vowel_duration = round(vowel_duration, 2),
+      early_F0 = round(early_F0, 2),
+      early_F0_range = round(early_F0_range, 2),
+      early_speech_rate = round(early_speech_rate, 2),
+      early_vowel_duration = round(early_vowel_duration, 2),
+      late_F0 = round(late_F0, 2),
+      late_F0_range = round(late_F0_range, 2),
+      late_speech_rate = round(late_speech_rate, 2),
+      late_vowel_duration = round(late_vowel_duration, 2)
+    )
+}
+
+
+speaker_group1 <- read.csv("N-NN.csv")
+speaker_group2 <- read.csv("NN1-NN1.csv")
+speaker_group3 <- read.csv("NN1-NN2.csv")
+
+speaker_group1_clean <- data_cleaning(speaker_group1) %>% mutate(group = "native")
+speaker_group2_clean <- data_cleaning(speaker_group2) %>% mutate(group = "L2_same_L1")
+speaker_group3_clean <- data_cleaning(speaker_group3) %>% mutate(group = "L2_diff_L1")
+
+data_all <- bind_rows(speaker_group1_clean, speaker_group2_clean, speaker_group3_clean)
+
+
+str(data_all[, c("subject", "group", "F0", "F0_range", "speech_rate", "vowel_duration")])
+
+```
+
+```{r}
+#| label: data analysis
+#| include: false
+
+data_general <- data_all %>%
+  mutate(
+    general_F0 = early_F0,
+    general_F0_range = early_F0_range,
+    general_speech_rate = early_speech_rate,
+    general_vowel_duration = early_vowel_duration
+  )
+
+data_general <- data_general %>% mutate(group = relevel(as.factor(group), ref = "native"))
+
+# linear mixed-effect model
+
+cat("General F0:\n")
+model_general_F0 <- lm(general_F0 ~ group, data = data_general)
+print(summary(model_general_F0))
+
+cat("\nGeneral F0_range:\n")
+model_general_F0_range <- lm(general_F0_range ~ group, data = data_general)
+print(summary(model_general_F0_range))
+
+cat("\nGeneral Speech Rate:\n")
+model_general_speech <- lm(general_speech_rate ~ group, data = data_general)
+print(summary(model_general_speech))
+
+cat("\nGeneral Vowel Duration:\n")
+model_general_vowel <- lm(general_vowel_duration ~ group, data = data_general)
+print(summary(model_general_vowel))
+
+extract_lm_results <- function(model) {
+  tidy_model <- tidy(model)
+  results <- tidy_model %>%
+    mutate(
+      beta = round(estimate, 2),
+      t_value = round(statistic, 2),
+      p_value = ifelse(p.value < 0.001, "p < .001", paste0("p = ", round(p.value, 4)))
+    )
+  return(results)
+}
+
+results_F0 <- extract_lm_results(model_general_F0)
+results_F0_range <- extract_lm_results(model_general_F0_range)
+results_speech_rate <- extract_lm_results(model_general_speech)
+results_vowel_duration <- extract_lm_results(model_general_vowel)
+```
+
+```{r}
+#| label: tbl-earlydata
+#| tbl-cap: "Table I."
+#| apa-note: "F0 (Hz), F0 Range (Hz), Speech Rate (syllables per second), Vowel Duration (s)"
+
+data_general_summary <- data_all %>%
+  group_by(group) %>%
+  summarise(
+    F0 = mean(F0, na.rm = TRUE),
+    `F0 range` = mean(F0_range, na.rm = TRUE),
+    `Speech Rate` = mean(speech_rate, na.rm = TRUE),
+    `Vowel Duration` = mean(vowel_duration, na.rm = TRUE)
+  ) %>%
+  ungroup() %>%
+  mutate(group = recode(group,
+    native = "Native Speaker",
+    L2_same_L1 = "L2 Speaker with Same L1",
+    L2_diff_L1 = "L2 Speaker with Different L1"
+  ))
+
+data_general_summary %>%
+  rename("Conversation Partner" = group) %>%
+  flextable() %>%
+  autofit() %>%
+  flextable::width(j = 1, width = 2) %>%
+  flextable::width(j = 2:5, width = 1) %>%
+  flextable::fontsize(size = 9) %>%
+  flextable::set_table_properties(width = 0.6) %>%
+  theme_apa()
+
+```
+
+# Results
+L2 speakers with different L1 had a significantly higher F0_range (`beta =` `r results_F0_range$beta[2]`, `t =` `r results_F0_range$t_value[2]`, `r results_F0_range$p_value[2]`).
+
+```{r}
+#| label: fig-f0-boxplot
+#| fig-cap: "Fig. I"
+#| apa-note: "F0 (Hz) for each group."
+#| fig-width: 8
+#| fig-height: 5
+
+data_f0_plot <- data_all %>%
+  mutate(group = recode(group,
+                        native = "Native Speaker",
+                        L2_same_L1 = "L2 Speaker with Same L1",
+                        L2_diff_L1 = "L2 Speaker with Different L1"))
+
+my_colors <- c(
+  "Native Speaker" = "#FCCB9B",
+  "L2 Speaker with Same L1" = "#B2D2FF",
+  "L2 Speaker with Different L1" = "#D1B2FF"
+)
+
+ggplot(data_f0_plot, aes(x = group, y = F0, fill = group)) +
+  geom_boxplot(
+    width = 0.4, 
+    outlier.shape = 21, 
+    outlier.size = 2, 
+    outlier.stroke = 0.5, 
+    outlier.fill = "white", 
+    coef = Inf
+  ) +
+  scale_fill_manual(values = my_colors) +
+  labs(
+    x = "Conversation Partner", 
+    y = "F0 (Hz)",
+    title = "Enhanced Box Plot for F0 by Conversation Partner"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    legend.position = "none"
+  )
+```
+
+```{r}
+#| label: fig-f0range-boxplot
+#| fig-cap: "Fig. II"
+#| apa-note: "F0 Range (Hz) for each group."
+#| fig-width: 8
+#| fig-height: 5
+
+data_f0range_plot <- data_all %>%
+  mutate(group = recode(group,
+                        native = "Native Speaker",
+                        L2_same_L1 = "L2 Speaker with Same L1",
+                        L2_diff_L1 = "L2 Speaker with Different L1"))
+
+ggplot(data_f0_plot, aes(x = group, y = F0_range, fill = group)) +
+  geom_boxplot(
+    width = 0.4, 
+    outlier.shape = 21, 
+    outlier.size = 2, 
+    outlier.stroke = 0.5, 
+    outlier.fill = "white", 
+    coef = Inf
+  ) +
+  scale_fill_manual(values = my_colors) +
+  labs(
+    x = "Conversation Partner", 
+    y = "F0 Range (Hz)",
+    title = "Enhanced Box Plot for F0 Range by Conversation Partner"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    legend.position = "none"
+  )
+```
+
+
+\clearpage
+
+# References
+
+:::{#refs}
+:::
