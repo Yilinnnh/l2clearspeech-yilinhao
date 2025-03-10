@@ -47,3 +47,12 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+#localfolder
+clear_speech_data/
+
+#pdf render files
+L2-clear-speech.tex
+figure-pdf/
+
+README.html
