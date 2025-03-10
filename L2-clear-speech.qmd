@@ -141,11 +141,14 @@ Specifically, the present study aims to answer the following questions: whether 
 # Methods
 Participants
 Participants were students recruited from Northwestern University, including 8 native speakers of English (4 female) and 38 L2 speakers (19 female). L2 speakers were included if they were non-native speakers who could also speak English and demonstrate proficiency in English. These participants had been in the U.S. for no more than 3 years and had achieved TOEFL scores of at least 600 for the paper-based test, 250 for the computer-based test, or 100 for the internet-based test [@van_engen_wildcat_2010].
-Materials
+
+## Materials  {#sec-materials}
 This study will analyze conversations recorded during Diapix tasks, drawn from the Wildcat Corpus [@van_engen_wildcat_2010]. The Diapix task requires two participants to identify differences in a pair of pictures. Each pair of pictures presents the same general scene but with 10 differences: each picture has three items that are missing from the other, and there are four slight differences between the two pictures (“change” items, such as differences in color or other details) [@van_engen_wildcat_2010]. Each participant will be able to see one of a pair of pictures and they are asked to identify all the differences by verbal communication with their partner.
-Procedure
+
+## Procedure  {#sec-procedure}
 Participants completed the Diapix task in two groups. One group involves pairs of two L2 speakers, and the second group involves pairs of one L2 speaker with a native English speaker. Participants sat back-to-back in a recording room where they could communicate but could not see each other's pictures. They were instructed to work collaboratively through conversation to identify all the differences in their pictures within 20 minutes and mark them by drawing circles or notes, etc. They wore headsets so their speeches will be recorded separately.
-Data Analysis
+
+## Data Analysis  {#sec-data-analysis}
 Recording of participants’ speech will be transcribed using the phonetic analysis software Praat. The articulation rate will be calculated by the number of syllables produced in speech divided by the total duration of the speech. The mean energy and fundamental frequency will be measured by Praat. The independent variables will be different kinds of participant pairing, including one native speaker and one L2 speaker or two L2 speakers, and different stages of conversation (early or late). We will compare the F0, mean energy, and articulation rate of L2 speakers’ speech between these two groups, either talking to L2 speakers or native speakers. In addition, we will examine how these features vary between the early and late stages of the conversation. The greater F0, mean energy, and slower articulation rate are going to be the indicators of clear speech. The results will be analyzed using R with separate linear mixed-effects models.
 
 
@@ -189,9 +192,9 @@ data_cleaning <- function(speaker_group) {
 }
 
 
-speaker_group1 <- read.csv("N-NN.csv")
-speaker_group2 <- read.csv("NN1-NN1.csv")
-speaker_group3 <- read.csv("NN1-NN2.csv")
+speaker_group1 <- read.csv("L2-clear-speech-data/N-NN.csv")
+speaker_group2 <- read.csv("L2-clear-speech-data/NN1-NN1.csv")
+speaker_group3 <- read.csv("L2-clear-speech-data/NN1-NN2.csv")
 
 speaker_group1_clean <- data_cleaning(speaker_group1) %>% mutate(group = "native")
 speaker_group2_clean <- data_cleaning(speaker_group2) %>% mutate(group = "L2_same_L1")
@@ -205,7 +208,7 @@ data_all <- bind_rows(speaker_group1_clean, speaker_group2_clean, speaker_group3
 
 str(data_all[, c("subject", "group", "F0", "F0_range", "speech_rate", "vowel_duration")])
 
-write_csv(data_all, "cleaned_data.csv")
+write_csv(data_all, "L2-clear-speech-data/cleaned_data.csv")
 
 ```
 
