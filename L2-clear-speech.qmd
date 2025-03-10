@@ -140,7 +140,7 @@ Specifically, the present study aims to answer the following questions: whether 
 
 # Methods
 Participants
-Participants were students recruited from Northwestern University, including native speakers of English and L2 speakers. L2 speakers were included if they were non-native speakers who could also speak English and demonstrate proficiency in English. These participants had been in the U.S. for no more than 3 years and had achieved TOEFL scores of at least 600 for the paper-based test, 250 for the computer-based test, or 100 for the internet-based test [@van_engen_wildcat_2010].
+Participants were students recruited from Northwestern University, including 8 native speakers of English (4 female) and 38 L2 speakers (19 female). L2 speakers were included if they were non-native speakers who could also speak English and demonstrate proficiency in English. These participants had been in the U.S. for no more than 3 years and had achieved TOEFL scores of at least 600 for the paper-based test, 250 for the computer-based test, or 100 for the internet-based test [@van_engen_wildcat_2010].
 Materials
 This study will analyze conversations recorded during Diapix tasks, drawn from the Wildcat Corpus [@van_engen_wildcat_2010]. The Diapix task requires two participants to identify differences in a pair of pictures. Each pair of pictures presents the same general scene but with 10 differences: each picture has three items that are missing from the other, and there are four slight differences between the two pictures (“change” items, such as differences in color or other details) [@van_engen_wildcat_2010]. Each participant will be able to see one of a pair of pictures and they are asked to identify all the differences by verbal communication with their partner.
 Procedure
@@ -210,7 +210,7 @@ write_csv(data_all, "cleaned_data.csv")
 ```
 
 ```{r}
-#| label: data analysis
+#| label: data-analysis-different-groups
 #| include: false
 
 data_long <- data_all %>%
@@ -227,6 +227,7 @@ extract_lmer_results <- function(model) {
   results <- tidy_model %>%
     mutate(
       beta = round(estimate, 2),
+      se = round(std.error, 2),
       t_value = round(statistic, 2),
       p_value = ifelse(p.value < 0.001, "p < .001", paste0("p = ", round(p.value, 4)))
     )
@@ -243,7 +244,7 @@ for (m in measures) {
   data_m <- data_long %>% 
     filter(measure == m) %>%
     mutate(
-      group = factor(group, levels = c("L2_diff_L1", "native", "L2_same_L1")),
+      group = factor(group, levels = c("native", "L2_diff_L1", "L2_same_L1")),
       time = factor(time, levels = c("early", "late"))
     )
   
@@ -256,16 +257,46 @@ for (m in measures) {
 ```
 
 ```{r}
+#| label: data-analysis-earlyvslate
+#| include: false
+data_native_vs_l2diff <- data_long %>%
+  filter(group %in% c("native", "L2_diff_L1")) %>%
+  mutate(
+    group = factor(group, levels = c("L2_diff_L1", "native")),
+    time = factor(time, levels = c("early", "late"))
+  )
+
+lmm_native_vs_l2diff_models <- list()
+lmm_native_vs_l2diff_results <- list()
+
+for (m in measures) {
+  cat("\n", m, " (Native vs L2_diff_L1):\n")
+  
+  data_m <- data_native_vs_l2diff %>%
+    filter(measure == m)
+  
+  model_m <- lmer(value ~ time * group + (1 | subject), data = data_m)
+  print(summary(model_m))
+  
+  lmm_native_vs_l2diff_models[[m]] <- model_m
+  lmm_native_vs_l2diff_results[[m]] <- extract_lmer_results(model_m)
+}
+
+```
+
+
+```{r}
 #| label: tbl-earlydata
 #| tbl-cap: "F0, F0 Range, Speech Rate, and Vowel Duration by Conversation Partner"
 #| apa-note: "F0 (Hz), F0 Range (Hz), Speech Rate (syllables per second), Vowel Duration (s)"
+#| echo: false
 data_general_summary <- data_all %>%
   group_by(group) %>%
   summarise(
-    F0 = mean(F0, na.rm = TRUE),
-    `F0 range` = mean(F0_range, na.rm = TRUE),
-    `Speech Rate` = mean(speech_rate, na.rm = TRUE),
-    `Vowel Duration` = mean(vowel_duration, na.rm = TRUE)
+    F0 = mean(early_F0, na.rm = TRUE),
+    `F0 range` = mean(early_F0_range, na.rm = TRUE),
+    `Speech Rate` = mean(early_speech_rate, na.rm = TRUE),
+    `Vowel Duration` = mean(early_vowel_duration, na.rm = TRUE)
   ) %>%
   ungroup() %>%
   mutate(group = recode(group,
@@ -273,6 +304,7 @@ data_general_summary <- data_all %>%
     L2_same_L1 = "L2 Speaker with Same L1",
     L2_diff_L1 = "L2 Speaker with Different L1"
   ))
+  
 data_general_summary %>%
   rename("Conversation Partner" = group) %>%
   flextable() %>%
@@ -284,15 +316,13 @@ data_general_summary %>%
   theme_apa()
 ```
 
-# Results
-L2 speakers with different L1 had a significantly higher F0_range
-
 ```{r}
 #| label: fig-f0-boxplot
 #| fig-cap: "F0 by Conversation Partner"
 #| apa-note: "F0 (Hz) for each group."
-#| fig-width: 8
-#| fig-height: 5
+#| fig-width: 6
+#| fig-height: 4
+#| echo: false
 data_f0_plot <- data_all %>%
   select(subject, group, early_F0, late_F0) %>%
   pivot_longer(
@@ -342,8 +372,9 @@ ggplot(data_f0_plot, aes(x = group, y = F0_time, fill = group)) +
 #| label: fig-f0range-boxplot
 #| fig-cap: "F0 Range by Conversation Partner"
 #| apa-note: "F0 Range (Hz) for each group."
-#| fig-width: 8
-#| fig-height: 5
+#| fig-width: 6
+#| fig-height: 4
+#| echo: false
 data_f0range_plot <- data_all %>%
   select(subject, group, early_F0_range, late_F0_range) %>%
   pivot_longer(
@@ -383,6 +414,31 @@ ggplot(data_f0range_plot, aes(x = group, y = F0_range_time, fill = group)) +
   )
 
 ```
+```{r}
+#| label: fig-f0range-violin-plot
+#| fig-cap: "F0 Range by Conversation Stage"
+#| apa-note: "F0 Range (Hz)."
+#| fig-width: 4
+#| fig-height: 3
+#| echo: false
+# Violin plot for L2_diff_L1 group: comparing Early and Late stages (F0)
+data_l2diff_violin <- data_long %>%
+  filter(group == "L2_diff_L1", measure == "F0_range") %>%
+  mutate(
+    time = recode(time, early = "Early", late = "Late")
+  )
+
+ggplot(data_l2diff_violin, aes(x = time, y = value, fill = time)) +
+  geom_violin(trim = FALSE, alpha = 0.7) +
+  geom_boxplot(width = 0.1, fill = "white", outlier.shape = NA) +
+  scale_fill_manual(values = c("Early" = "#D1B2FF", "Late" = "#D1B2FF")) +
+  labs(
+    x = "Conversation Stage",
+    y = "F0 (Hz)"
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(legend.position = "none")
+```
 
 ```{r}
 #| label: gender-difference-analysis
@@ -417,13 +473,14 @@ cat("Overall Mean F0:", overall_mean_F0, "\n")
 #| label: fig-f0-gender-difference-l2diffl1-group
 #| fig-cap: "F0 Comparison by Gender in L2 Speakers"
 #| apa-note: "F0 (Hz)."
-#| fig-width: 8
-#| fig-height: 5
+#| fig-width: 4
+#| fig-height: 3
+#| echo: false
 ggplot(data_f0_gender, aes(x = gender, y = early_F0, fill = gender)) +
   geom_boxplot(outlier.shape = 21, outlier.fill = "white") +
   geom_hline(yintercept = overall_mean_F0, linetype = "dashed", color = "black") +
   geom_text(data = f0_summary, aes(x = gender, y = mean_F0, label = ifelse(above_overall_mean, "Above Mean", "Below Mean")),
-            vjust = -1, size = 5, color = "black") +
+            vjust = -1, size = 3, color = "black") +
   scale_fill_manual(values = c("Female" = "#FF9999", "Male" = "#99CCFF")) +
   labs(
     x = "Gender",
@@ -433,6 +490,27 @@ ggplot(data_f0_gender, aes(x = gender, y = early_F0, fill = gender)) +
   theme_minimal(base_size = 14)
 
 ```
+
+# Results
+The linear mixed-effects regression model reveals that L2 speakers' F0 range is larger when their conversation partner is an L2 speaker with a different L1 with them (M = `r data_general_summary[["F0 range"]][data_general_summary$group == "L2 Speaker with Different L1"]`) compared to when the conversation partner is native speaker (M = `r data_general_summary[["F0 range"]][data_general_summary$group == "Native Speaker"]`) (β = `r mixed_results[['F0_range']]$beta[mixed_results[['F0_range']]$term == "groupL2_diff_L1"]`, SE = `r mixed_results[['F0_range']]$se[mixed_results[['F0_range']]$term == "groupL2_diff_L1"]`, `r mixed_results[['F0_range']]$p_value[mixed_results[['F0_range']]$term == "groupL2_diff_L1"]`). In addition, there is a tendency for L2 speakers' F0 to be greater when they speak with an L2 speaker with a different L1 (M = `r data_general_summary$F0[data_general_summary$group == "L2 Speaker with Different L1"]`) than when speaking with a native speaker (M = `r data_general_summary$F0[data_general_summary$group == "Native Speaker"]`), but the difference is not significant (β = `r mixed_results[['F0']]$beta[mixed_results[['F0']]$term == "groupL2_diff_L1"]`, SE = `r mixed_results[['F0']]$se[mixed_results[['F0']]$term == "groupL2_diff_L1"]`, `r mixed_results[['F0']]$p_value[mixed_results[['F0']]$term == "groupL2_diff_L1"]`). 
+There is no significant difference in speech rate between the L2 listener (M = `r data_general_summary[["Speech Rate"]][data_general_summary$group == "L2 Speaker with Different L1"]`) and native listener conditions (M = `r data_general_summary[["Speech Rate"]][data_general_summary$group == "Native Speaker"]`) (β = `r mixed_results[['speech_rate']]$beta[mixed_results[['speech_rate']]$term == "groupL2_diff_L1"]`, SE = `r mixed_results[['speech_rate']]$se[mixed_results[['speech_rate']]$term == "groupL2_diff_L1"]`, `r mixed_results[['speech_rate']]$p_value[mixed_results[['speech_rate']]$term == "groupL2_diff_L1"]`). Similarly, vowel duration does not differ significantly between the L2 listener (M = `r data_general_summary[["Vowel Duration"]][data_general_summary$group == "L2 Speaker with Different L1"]`) and native listener conditions (M = `r data_general_summary[["Vowel Duration"]][data_general_summary$group == "Native Speaker"]`) (β = `r mixed_results[['vowel_duration']]$beta[mixed_results[['vowel_duration']]$term == "groupL2_diff_L1"]`, SE = `r mixed_results[['vowel_duration']]$se[mixed_results[['vowel_duration']]$term == "groupL2_diff_L1"]`, `r mixed_results[['vowel_duration']]$p_value[mixed_results[['vowel_duration']]$term == "groupL2_diff_L1"]`). Further, there is no significant difference in F0 or F0 range between early and late portion of the conversation as shown in @fig-f0-boxplot, @fig-f0range-boxplot, and @fig-f0range-violin-plot.
+
+# Discussion
+This study examines L2 speakers' use of **clear speech**[^1] in natural conversations. Specifically, we investigate whether L2 speakers employ clear speech when communicating with another L2 speaker who has a different L1. The results indicate that their F0 range is significantly larger when speaking to another L2 speaker compared to a native speaker. Although the mean difference in F0 between these two groups is large, it does not reach statistical significance, possibly due to the high variance in F0 between female and male speakers in our dataset[^2]. As shown in @fig-f0-gender-difference-l2diffl1-group, female and male speakers inherently exhibit different F0 values due to physiological differences. However, the significant increase in F0 range suggests that L2 speakers actively hyperarticulate their speech.
+
+There is no significant difference in speech rate and vowel duration, which may be because L2 speakers generally speak at a slower rate[^3]. Since they do not expect their listeners to have trouble understanding them, they may not adjust their speech in these ways. Additionally, the lack of significant differences between the early and late portions of speech suggests that L2 speakers consistently monitor their speech throughout the conversation.
+
+
+[^1]: **Clear speech** refers to speech modifications that enhance intelligibility, including:  
+&nbsp;&nbsp;&nbsp;&nbsp; - Greater F0  
+&nbsp;&nbsp;&nbsp;&nbsp; - Greater F0 range  
+&nbsp;&nbsp;&nbsp;&nbsp; - Slower articulation rate  
+&nbsp;&nbsp;&nbsp;&nbsp; - Longer vowel duration 
+
+[^2]: Female speakers generally have a higher F0 than male speakers.  
+
+[^3]: The participants’ speech rate is approximately 3 syllables per second, which is considerably slower than the typical speech rate of native speakers.
+
 
 
 \clearpage
