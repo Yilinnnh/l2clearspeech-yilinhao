@@ -49,11 +49,10 @@ po/*~
 rsconnect/
 
 #localfolder
-clear_speech_data/
+clear_speech_data_raw/
 
 #pdf render files
 L2-clear-speech.tex
-figure-pdf/
+L2-clear-speech_files/
 
 README.html
-~$bliography.bib
