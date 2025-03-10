@@ -17,19 +17,15 @@ L2_clear_speech/
 
 ├── L2-clear-speech.pdf           # PDF version of the manuscript
 
-├── L2-clear-speech_files         # Folder containing additional Quarto-generated files
+├── L2-clear-speech-data
 
-│   ├── L2-clear-speech.tex
+│   ├── N-NN.csv                  # Raw data: Native - Non-Native speaker conversation data
 
-│   ├── figure-pdf                # Folder storing figures in PDF format
+│   ├── N1-NN1.csv                # Raw data: L2 speakers with the same L1 conversation data
 
-├── N-NN.csv                      # Raw data: Native - Non-Native speaker conversation data
+│   ├── N1-NN2.csv                # Raw data: L2 speakers with different L1 conversation data
 
-├── N1-NN1.csv                    # Raw data: L2 speakers with the same L1 conversation data
-
-├── N1-NN2.csv                    # Raw data: L2 speakers with different L1 conversation data
-
-├── cleaned_data.csv              # Cleaned dataset used for analysis
+│   ├── cleaned_data.csv          # Cleaned dataset used for analysis
 
 ├── bibliography.bib              # BibTeX bibliography file for citations
 
