@@ -87,6 +87,7 @@ library(lmerTest)
 library(broom.mixed)
 library(Matrix)
 library(forcats)
+require(lme4)
 
 # Set conflict preferences
 conflicts_prefer(dplyr::filter, .quiet = TRUE)
