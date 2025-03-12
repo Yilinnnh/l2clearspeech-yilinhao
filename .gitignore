@@ -50,7 +50,6 @@ rsconnect/
 
 #localfolder
 clear_speech_data_raw/
-l2clearspeech-yilinhao.Rproj
 
 #pdf render files
 L2-clear-speech.tex
