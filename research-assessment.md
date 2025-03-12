@@ -32,25 +32,25 @@ Section: 1
 
 Research project title: L2 Speakers' Use and Maintenance of Clear Speech in Natural Conversations
 
-Submission date: 2/26/2025
+Submission date: 3/11/2025
 
-Submission number (1-4): 1
+Submission number (1-4): 2
 
-Project GitHub repository URL: https://github.com/Yilinnnh/l2clearspeech-yilinhao
+Project GitHub repository URL: https://github.com/Yilinnnh/l2clearspeech-yilinhao/tree/main
 
-Filename of manuscript .qmd: Final_project.qmd
-
-Filename of knitted .pdf: Final_project.pdf
+Filename of manuscript .qmd: L2-clear-speech.qmd
+Filename of knitted .pdf: L2-clear-speech.pdf
 
 
 ## AI Statement
 
 Describe whether and how you used AI/LLMs when completing this project: 
 
-Optionally (for engagement points) reflect on your use of AI:
-
 I used chatgpt to help me with errors I couldn't figure out myself.
 
+Optionally (for engagement points) reflect on your use of AI:
+
+Chatgpt is very good at identifying potential reasons behind errors and suggesting solutions. For instance, when I successfully installed a package in R but couldn't require it, chatgpt provided multiple ways to check whether the installation was correct, if the package was located in the right path, and whether it was compatible with its associated dependencies. However, it sometimes offers more complex solutions that may not be necessary, so it's important to evaluate and filter the recommendations accordingly.
 
 
 ## Overall requirements
@@ -112,7 +112,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     1.  Includes description of repo purpose, data use, research questions, etc.
     2.  Outlines the repo structure with file tree or similar
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments: 
 
@@ -175,7 +175,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     1. Uses conditional in multiple contexts, including dplyr pipelines
     2. Uses multiple types of conditional/loop functions (e.g., `if_else()`, `case_when()`, `for`, `while`)
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments:
         
@@ -186,7 +186,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Writes out intermediate and/or final datasets in code chunks or sourced scripts
     3. Uses only relative paths that run without error when repo is cloned
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -215,7 +215,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Uses `forcats` functions in a data transformation pipeline
     - NOTE: Though they are base R functions, `factor()` and `levels()` can be used to meet this objective as long as they are used in a way that demonstrates the same skills as `forcats` functions, which should involve including optional arguments
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -247,7 +247,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Combines facets with other dynamic grouping aesthetics
       1. If data only includes 1 sensible grouping variable, it may be used for both the faceting and groupin aes.  
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments:
         
@@ -293,7 +293,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     3. Discriminates between informative and non-informative statistics and presents only the former in narrative text
     4. Uses dynamic inline R code to render data-dependent text
 
-        -   [ ] Objective attempt
+        -   [x] Objective attempt
         -   [ ] Objective met
         -   Grader comments:
 
@@ -435,6 +435,7 @@ Optionally (for engagement points) write a brief reflection about your work on t
 - What did you learn from this project that you will carry forward to future projects?
 - What are you most proud of in this project?
 
+The most challenging and also most rewarding aspect of the project is to figure out how to create meaningful analyses and results while also effectively meeting the objectives. This process pushed me to think deeply about my dataset and explore how I could analyze it from different perspectives. By trying to align my analyses with the project objectives, I was able to uncover various ways to interpret the data, considering different statistical models, and visualization techniques. This project taught me how to use R to create an APA-style manuscript, including inline references, creating APA-style YAML header, etc. These skills are really valuable, as they have prepared me for drafting my thesis manuscript.
 
 Alternatively/additionally in mind some of the suggested ways to earn engagement points, and expand on this (or other aspects of your project) in your reflection:
 

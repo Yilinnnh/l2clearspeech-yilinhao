@@ -36,10 +36,6 @@ language:
   citation-masked-date: "n.d."
   citation-masked-title: "Masked Title"
   email: "Email"
-#  title-block-author-note: "Author Note"
-#  title-block-correspondence-note: "Correspondence concerning this article should be addressed to"
-#  title-block-role-introduction: "Author roles were classified using the Contributor Role Taxonomy (CRediT; https://credit.niso.org/) as follows:"
-#  title-impact-statement: "Impact Statement"
   references-meta-analysis: "References marked with an asterisk indicate studies included in the meta-analysis."
 format:
   apaquarto-html: default
@@ -68,17 +64,20 @@ format:
 #install.packages(lme4)
 #install.packages(RColorBrewer)
 #install.packages(broom)
+#install.packages(flextable)
+#install.packages(lmerTest)
+#install.packages(broom.mixed)
+#install.packages(Matrix)
+#install.packages(forcats)
+#install.packages(tidyr)
+#install.packages(dplyr)
 
-#load packages
+# Load libraries
 library(conflicted)
 library(papaja)
 library(dplyr)
-library(stringr)
-library(lme4)
-library(dplyr)
 library(tidyverse)
 library(ggplot2)
-library(stringr)
 library(flextable)
 library(RColorBrewer)
 library(broom)
@@ -89,11 +88,11 @@ library(broom.mixed)
 library(Matrix)
 library(forcats)
 
+# Set conflict preferences
 conflicts_prefer(dplyr::filter, .quiet = TRUE)
 conflicts_prefer(flextable::separate_header, .quiet = TRUE)
 conflicts_prefer(flextable::theme_apa, .quiet = TRUE)
 conflicts_prefer(lmerTest::lmer, .quiet = TRUE)
-
 
 set.seed(2222)
 ```
@@ -161,6 +160,7 @@ data_cleaning <- function(speaker_group) {
                "early_F0", "early_F0_range", "early_speech_rate", "early_vowel_duration",
                "late_F0", "late_F0_range", "late_speech_rate", "late_vowel_duration")) %>%
     mutate(subject = str_to_upper(str_trim(subject))) %>%
+    # Convert non-numeric values to numeric
     mutate(
       F0 = as.numeric(gsub("[^0-9\\.\\-]", "", F0)),
       F0_range = as.numeric(gsub("[^0-9\\.\\-]", "", F0_range)),
@@ -175,6 +175,7 @@ data_cleaning <- function(speaker_group) {
       late_speech_rate = as.numeric(gsub("[^0-9\\.\\-]", "", late_speech_rate)),
       late_vowel_duration = as.numeric(gsub("[^0-9\\.\\-]", "", late_vowel_duration))
     ) %>%
+    # Round numerical values to 2 decimal places
     mutate(
       F0 = round(F0, 2),
       F0_range = round(F0_range, 2),
@@ -196,6 +197,7 @@ speaker_group1 <- read.csv("L2-clear-speech-data/N-NN.csv")
 speaker_group2 <- read.csv("L2-clear-speech-data/NN1-NN1.csv")
 speaker_group3 <- read.csv("L2-clear-speech-data/NN1-NN2.csv")
 
+# Clean and categorize the data
 speaker_group1_clean <- data_cleaning(speaker_group1) %>% mutate(group = "native")
 speaker_group2_clean <- data_cleaning(speaker_group2) %>% mutate(group = "L2_same_L1")
 speaker_group3_clean <- data_cleaning(speaker_group3) %>% mutate(group = "L2_diff_L1")
@@ -208,6 +210,7 @@ data_all <- bind_rows(speaker_group1_clean, speaker_group2_clean, speaker_group3
 
 str(data_all[, c("subject", "group", "F0", "F0_range", "speech_rate", "vowel_duration")])
 
+# Save the cleaned data to a new csv file
 write_csv(data_all, "L2-clear-speech-data/cleaned_data.csv")
 
 ```
@@ -216,6 +219,8 @@ write_csv(data_all, "L2-clear-speech-data/cleaned_data.csv")
 #| label: data-analysis-different-groups
 #| include: false
 
+#Data analysis using linear regression model
+# Reshape data to long format
 data_long <- data_all %>%
   pivot_longer(
     cols = c(early_F0, late_F0, early_F0_range, late_F0_range, 
@@ -225,6 +230,7 @@ data_long <- data_all %>%
     values_to = "value"
   )
 
+#Extract analysis results
 extract_lmer_results <- function(model) {
   tidy_model <- broom.mixed::tidy(model, effects = "fixed")
   results <- tidy_model %>%
@@ -251,9 +257,11 @@ for (m in measures) {
       time = factor(time, levels = c("early", "late"))
     )
   
+  #Analyze using linear mixed-effects model
   model_m <- lmer(value ~ time * group + (1 | subject), data = data_m)
   print(summary(model_m))
   
+  # Store results
   mixed_models[[m]] <- model_m
   mixed_results[[m]] <- extract_lmer_results(model_m)
 }
@@ -293,6 +301,8 @@ for (m in measures) {
 #| tbl-cap: "F0, F0 Range, Speech Rate, and Vowel Duration by Conversation Partner"
 #| apa-note: "F0 (Hz), F0 Range (Hz), Speech Rate (syllables per second), Vowel Duration (s)"
 #| echo: false
+
+# Summarize mean F0, F0 range, speech rate, and vowel duration by group
 data_general_summary <- data_all %>%
   group_by(group) %>%
   summarise(
@@ -307,7 +317,8 @@ data_general_summary <- data_all %>%
     L2_same_L1 = "L2 Speaker with Same L1",
     L2_diff_L1 = "L2 Speaker with Different L1"
   ))
-  
+
+# Convert the table 
 data_general_summary %>%
   rename("Conversation Partner" = group) %>%
   flextable() %>%
@@ -326,6 +337,8 @@ data_general_summary %>%
 #| fig-width: 6
 #| fig-height: 4
 #| echo: false
+
+# Prepare data for visualization
 data_f0_plot <- data_all %>%
   select(subject, group, early_F0, late_F0) %>%
   pivot_longer(
@@ -348,6 +361,7 @@ my_colors <- c(
   "L2 Speaker with Different L1" = "#D1B2FF"
 )
 
+# Create the boxplot
 ggplot(data_f0_plot, aes(x = group, y = F0_time, fill = group)) +
   geom_boxplot(
     width = 0.4, 
@@ -362,7 +376,7 @@ ggplot(data_f0_plot, aes(x = group, y = F0_time, fill = group)) +
     x = "Conversation Partner", 
     y = "F0 (Hz)"
   ) +
-  facet_wrap(~ time, nrow = 1) +
+  facet_wrap(~ time, nrow = 1) + # Split by early and late time points
   theme_minimal(base_size = 12) +
   theme(
     axis.text.x = element_text(angle = 15, hjust = 0.5),
@@ -446,14 +460,18 @@ ggplot(data_l2diff_violin, aes(x = time, y = value, fill = time)) +
 ```{r}
 #| label: gender-difference-analysis
 #| include: false
+
+#Examine gender-based differences in F0 among L2 speakers with different L1
 data_f0_gender <- data_all %>%
   filter(group == "L2_diff_L1") %>%
   mutate(
-    gender = ifelse(grepl("f", subject, ignore.case = TRUE), "Female", "Male")
+    gender = if_else(grepl("f", subject, ignore.case = TRUE), "Female", "Male")
   )
 
+# Calculate the overall mean F0 for reference
 overall_mean_F0 <- mean(data_f0_gender$early_F0, na.rm = TRUE)
 
+# Summarize F0 by gender
 f0_summary <- data_f0_gender %>%
   group_by(gender) %>%
   summarise(
@@ -465,7 +483,7 @@ f0_summary <- data_f0_gender %>%
   ) %>%
   ungroup() %>%
   mutate(
-    above_overall_mean = mean_F0 > overall_mean_F0
+    above_overall_mean = mean_F0 > overall_mean_F0 # Identify if above/below overall mean
   )
 
 print(f0_summary)
@@ -479,11 +497,17 @@ cat("Overall Mean F0:", overall_mean_F0, "\n")
 #| fig-width: 4
 #| fig-height: 3
 #| echo: false
+
+data_f0_gender <- data_f0_gender %>% #highlight Female speakers with high F0
+  mutate(highlight = (early_F0 > overall_mean_F0) & (gender == "Female"))
 ggplot(data_f0_gender, aes(x = gender, y = early_F0, fill = gender)) +
   geom_boxplot(outlier.shape = 21, outlier.fill = "white") +
   geom_hline(yintercept = overall_mean_F0, linetype = "dashed", color = "black") +
-  geom_text(data = f0_summary, aes(x = gender, y = mean_F0, label = ifelse(above_overall_mean, "Above Mean", "Below Mean")),
+  geom_text(data = f0_summary, aes(x = gender, y = mean_F0, label = if_else(above_overall_mean, "Above Mean", "Below Mean")),
             vjust = -1, size = 3, color = "black") +
+  geom_point(data = subset(data_f0_gender, highlight), 
+            aes(x = gender, y = early_F0), 
+            shape = 21, size = 3, fill = "red", color = "black", stroke = 1) +
   scale_fill_manual(values = c("Female" = "#FF9999", "Male" = "#99CCFF")) +
   labs(
     x = "Gender",
