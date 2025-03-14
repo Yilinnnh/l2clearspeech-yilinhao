@@ -101,11 +101,11 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     3.  Does not have duplicate/redundant elements
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments: 
-            - Repo/file/folder names should be informative and relevant to content, not class context (e.g., nrdowling/infant-gesture not nrdowling/d2m-project; infant-gestures.qmd not d2m-final.qmd).
-            - Repo should not contain any files unrelated to the project (e.g, files from the example apaquarto manuscript)
-            - Top-level of repo should contain only necessary files (typically the .qmd, .bib., this assessment, the rendered pdf, README, .gitignore); other files should be organized into subdirectories
+            - ~~Repo/file/folder names should be informative and relevant to content, not class context (e.g., nrdowling/infant-gesture not nrdowling/d2m-project; infant-gestures.qmd not d2m-final.qmd).~~
+            - ~~Repo should not contain any files unrelated to the project (e.g, files from the example apaquarto manuscript)~~
+            - ~~Top-level of repo should contain only necessary files (typically the .qmd, .bib., this assessment, the rendered pdf, README, .gitignore); other files should be organized into subdirectories~~
 
 2.  Maintain an informative and up-to-date README.md
 
@@ -113,7 +113,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2.  Outlines the repo structure with file tree or similar
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments: 
 
 3.  integrate a GitHub repo with an R studio project, including .gitignore file
@@ -122,8 +122,9 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2.  .gitingore comprehensively excludes unnecessary, private, and very large files and are commented appropriately
 
         -   [x] Objective attempt
-        -   [ ] Objective met
-        -   Grader comments: 
+        -   [x] Objective met
+        -   Grader comments:  
+            - This is close enough, but take a look at what is actually being ignored and what isn't. You're gitignore isn't processing everything like you might expect. Double check that 1) you remove things from github that were added before you ignored them and 2) that the pattern matching in the .gitignore is working as you expect.
             - .gitignore should include (minimally) a localonly folder and pdf render files (e.g., the *_files folder, .ttt, .tex., .log, etc.), as well as comments describing the ignored items (in addition to the default ignored items if you’re using a template)
 
 4.  effectively use version control
@@ -132,7 +133,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2.  Relies on document revisions rather than manually created new versions
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
             - commits should be informative, explaining what changes were made (it’s ok if not all of them are going back to the very beginning of the project, but at least the most recent 5 should be)
 
@@ -146,9 +147,9 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Uses more than one function to install/load/require packages (including those used in commented code)
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
-            - Use more than 1 function to install/require/load packages; functions that (may) install something on your reader’s machine should be commented out
+            - ~~Use more than 1 function to install/require/load packages; functions that (may) install something on your reader’s machine should be commented out~~
         
 6.  Use arithmetic, comparison, and logical operators
 
@@ -156,7 +157,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Uses multiple operators in data transformation pipelines and/or inline R code
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
             - Must use all three: arithmetic (e.g., +, *, ^), comparison (e.g., ==, <, >=), and logical (e.g., &, |, !)
 
@@ -176,7 +177,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. Uses multiple types of conditional/loop functions (e.g., `if_else()`, `case_when()`, `for`, `while`)
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
         
 
@@ -187,8 +188,8 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     3. Uses only relative paths that run without error when repo is cloned
 
         -   [x] Objective attempt
-        -   [ ] Objective met
-        -   Grader comments:
+        -   [x] Objective met
+        -   Grader comments: Giving this to you, but you're using the base `read.csv()` function instead of `readr::read_csv()`. 
 
 10. Use `dplyr` and `tidyr` functions to transform data
 
@@ -216,7 +217,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     - NOTE: Though they are base R functions, `factor()` and `levels()` can be used to meet this objective as long as they are used in a way that demonstrates the same skills as `forcats` functions, which should involve including optional arguments
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### Data visualization with ggplot2
@@ -227,9 +228,9 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     2. At least one plot is multi-variable
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments: 
-            - Include at least 2 kinds of geoms (not necessarily in the same plot)
+            - ~~Include at least 2 kinds of geoms (not necessarily in the same plot)~~
 
 14. Use dynamic aesthetics to group data
 
@@ -248,7 +249,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
       1. If data only includes 1 sensible grouping variable, it may be used for both the faceting and groupin aes.  
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
         
 16. Create publication-quality plots using `theme` and `labs` layers
@@ -259,8 +260,10 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     4. Uses at least 1 static aesthetic (e.g., color, shape, size) that improves visual clarity without mapping to data
 
         -   [x] Objective attempt
-        -   [ ] Objective met
-        -   Grader comments: 1 tiny change needed - remove the "title" element from the ggplots, those should be assigned with fig-cap
+        -   [x] Objective met
+        -   Grader comments: 
+          - These are great! Only suggestion is to revisit the text/labels in Figure 4. It's tricky to read the actual text on the box plot.
+          - ~~1 tiny change needed - remove the "title" element from the ggplots, those should be assigned with fig-cap~~
 
 ### Data analysis
 
@@ -294,7 +297,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     4. Uses dynamic inline R code to render data-dependent text
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
 
 ### BibTeX
@@ -306,9 +309,9 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     3. May use `cite_r()` to cite R and R packages
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
-            - cite 3 sources at a minimum! I see many "hard-coded" citations in the text that can (should) be replaced with BibTeX citations
+            - ~~cite 3 sources at a minimum! I see many "hard-coded" citations in the text that can (should) be replaced with BibTeX citations~~
 
 21. Render an APA7 references page from a .bib file
 
@@ -356,8 +359,8 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     - NOTE: Ideally your table(s) should be produced in APA7 style, but this is not a strict requirement. At a minimum, they should render as formatted tables (not raw output), have readable and correctly formatted text (e.g., column headers should be capitalized and in plain english, not literal variable names), and the table must be dynamically referenced in the text.
 
         -   [x] Objective attempt
-        -   [ ] Objective met
-        -   Grader comments: Your figures and table look great - you just need to change how you label/title. You shouldn't assign a figure/table number manually anywhere. The fig-cap should be the title (vs putting it in the title argument of the ggplot). Using unique labels (like you've done) will generate the figure/table numbers for you.
+        -   [x] Objective met
+        -   Grader comments: ~~Your figures and table look great - you just need to change how you label/title. You shouldn't assign a figure/table number manually anywhere. The fig-cap should be the title (vs putting it in the title argument of the ggplot). Using unique labels (like you've done) will generate the figure/table numbers for you.~~
 
 25. Execute descriptive and inferential analyses in code chunks
 
@@ -378,7 +381,7 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     1. Includes all necessary metadata, output options, and formatting options necessary to render an APA styled document (or other specified style if appropriate for the project)
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
         
 27. Use quarto R Markdown to compose an academic manuscript
@@ -390,10 +393,10 @@ Refer to the website for general tips on meeting these objectives and an FAQ.
     - NOTE: This is going to be one of the most flexible objectives to demonstrate.  You need to demonstrate a range of markdown skills and use them to make a readable, informative manuscript. Hitting the four points above should do that, but you can use your judgment about what kind of markdown features will best serve your project. No matter what, you should use markdown to follow APA7 guidelines.
 
         -   [x] Objective attempt
-        -   [ ] Objective met
+        -   [x] Objective met
         -   Grader comments:
-            - I don't see any markdown stylized text or markdown elements like lists, footnotes, etc.
-            - be careful with formatting text around reported results. right now you've got backticks surrounding some text (e.g., ln274), which makes it render as raw code in the wrong font. You probably are looking for $ instead
+            - ~~I don't see any markdown stylized text or markdown elements like lists, footnotes, etc.~~
+            - ~~be careful with formatting text around reported results. right now you've got backticks surrounding some text (e.g., ln274), which makes it render as raw code in the wrong font. You probably are looking for $ instead~~
 
 28. Use inline R variables to replace static text
 
@@ -453,8 +456,12 @@ Alternatively/additionally in mind some of the suggested ways to earn engagement
 
 All final projects are graded by Dr. Dowling. You will see your grade on Canvas separated into two categories: objective points and engagement points.
 
--   **Objective points:** 13/30
--   **Engagement points:** 2/10
--   **Total points:** 15/40
+-   **Objective points:** 30/30
+-   **Engagement points:** 10/10
+-   **Total points:** 40/40
 
-**Comments:** Great start, Yilin! You've got a really strong foundation here. A few tweaks needed on some things, but for the most part you just need to fill in the gaps and you'll be in great shape.
+**Comments:** 
+
+Wow, great job Yilin!! This is just about perfect. I'm really impressed with how much work you've put into this, and the progress you've made since the last draft. I'm glad you felt like there was value in forcing yourself to meet the objectives that wouldn't necessarily have been things you incorporated originally. Excellent work, and I'm glad to read the latest progress on your thesis, too! Looking forward to seeing how that all wraps up next quarter!
+
+Great start, Yilin! You've got a really strong foundation here. A few tweaks needed on some things, but for the most part you just need to fill in the gaps and you'll be in great shape.
